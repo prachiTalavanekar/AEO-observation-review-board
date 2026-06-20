@@ -2,13 +2,21 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   eslint: {
-    // ESLint runs separately in CI — skip during next build to avoid circular JSON issue
     ignoreDuringBuilds: true,
   },
   typescript: {
-    // Type checking runs via tsc separately — keep false for strict Vercel deploys
     ignoreBuildErrors: false,
   },
+  // Vercel image optimization
+  images: {
+    unoptimized: false,
+  },
+  // Ensure trailing slashes are consistent
+  trailingSlash: false,
+  // Compress responses
+  compress: true,
+  // Power by header removal for security
+  poweredByHeader: false,
 };
 
 export default nextConfig;
