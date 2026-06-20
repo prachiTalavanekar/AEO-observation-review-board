@@ -58,7 +58,6 @@ export default function ObservationForm() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSubmitting(true);
-
     try {
       const { data, error } = await supabase
         .from("observations")
@@ -66,11 +65,12 @@ export default function ObservationForm() {
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) throw new Error(error.message);
       router.push(`/observation/${data.id}`);
     } catch (err) {
-      console.error("Failed to create observation:", err);
-      alert("Failed to create observation. Please try again.");
+      const message = err instanceof Error ? err.message : "Unknown error";
+      console.error("Failed to create observation:", message);
+      alert(`Failed to create observation: ${message}`);
     } finally {
       setSubmitting(false);
     }

@@ -5,21 +5,25 @@ import DashboardClient from "./DashboardClient";
 export const revalidate = 0;
 
 async function getObservations(): Promise<Observation[]> {
-  const { data, error } = await supabase
-    .from("observations")
-    .select("*")
-    .order("created_at", { ascending: false });
+  try {
+    const { data, error } = await supabase
+      .from("observations")
+      .select("*")
+      .order("created_at", { ascending: false });
 
-  if (error) {
-    console.error("Error fetching observations:", error);
+    if (error) {
+      console.error("Supabase error fetching observations:", error.message);
+      return [];
+    }
+
+    return data ?? [];
+  } catch (err) {
+    console.error("Unexpected error fetching observations:", err);
     return [];
   }
-
-  return data ?? [];
 }
 
 export default async function DashboardPage() {
   const observations = await getObservations();
-
   return <DashboardClient observations={observations} />;
 }

@@ -1,14 +1,6 @@
--- ============================================================
--- AEO Observation Review Board — Supabase Schema
--- Run this in your Supabase project's SQL editor
--- ============================================================
 
--- Enable UUID extension (already available in Supabase by default)
 create extension if not exists "pgcrypto";
 
--- ============================================================
--- Table: observations
--- ============================================================
 create table if not exists observations (
   id               uuid primary key default gen_random_uuid(),
   brand_name       text not null,
@@ -51,15 +43,3 @@ create index if not exists idx_action_items_observation_id
 alter table observations disable row level security;
 alter table action_items disable row level security;
 
--- ============================================================
--- Optional: seed data for testing
--- ============================================================
--- insert into observations (brand_name, website_url, target_query, ai_surface, observed_answer, competitor_names)
--- values (
---   'Acme Corp',
---   'https://acme.com',
---   'best project management software',
---   'ChatGPT',
---   'Acme Corp is briefly mentioned but Asana and Monday.com dominate the answer.',
---   ARRAY['Asana', 'Monday.com']
--- );
